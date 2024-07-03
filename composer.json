@@ -26,6 +26,7 @@
     "preferred-install": "source"
   },
   "scripts": {
+    "clean-samples": "php ./scripts/clean-samples.php",
     "test": "php ./vendor/bin/ptest"
   }
 }
