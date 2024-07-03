@@ -3,20 +3,20 @@
   "description": "Parse Mail Body (forwarded, replied) and extract original messages",
   "license": "MIT",
   "authors": [
-    { "name": "Matthias Leuffen", "email": "m@tth.es" }
+    {
+      "name": "Matthias Leuffen",
+      "email": "m@tth.es"
+    }
   ],
   "require": {
     "php": ">=8.3"
   },
-
-  "suggest": {
-  },
+  "suggest": {},
   "autoload": {
     "psr-4": {
-        "Leuffen\\MailBodyParse\\": "src/"
+      "Leuffen\\MailBodyParse\\": "src/"
     },
-      "files": [
-      ]
+    "files": []
   },
   "minimum-stability": "dev",
   "require-dev": {
@@ -24,5 +24,8 @@
   },
   "config": {
     "preferred-install": "source"
+  },
+  "scripts": {
+    "test": "php ./vendor/bin/ptest"
   }
 }
