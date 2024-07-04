@@ -1,13 +1,16 @@
 # leuffen-mailbodyparse
+
 Parse Mail Body
 
+## Requirements
 
+php ext mailparse
 
-
+```bash
+pecl install mailparse
+```
 
 ## Usage
-
-
 
 ##
 

@@ -4,16 +4,34 @@ namespace Leuffen\MailBodyParse;
 
 class MultipartEmail
 {
+    /**
+     * The email headers.
+     * @var EmailHeader
+     */
+    public readonly EmailHeader $headers;
 
-    public readonly Headers $headers;
+    /**
+     * The email body.
+     * @var EmailBody
+     */
+    public readonly EmailBody $body;
 
-    public readonly HtmlPart $parts;
+    /** 
+     * Array of email attachments.
+     * @var array<\PhpMimeMailParser\Attachment> 
+     */
+    public readonly array $attachments;
 
-
-    public function getParsedMessage(): ParsedMessage
+    /**
+     * @param EmailHeader $header 
+     * @param EmailBody $body 
+     * @param array<\PhpMimeMailParser\Attachment> $attachments
+     * @return void 
+     */
+    public function __construct(EmailHeader $header, EmailBody $body, array $attachments = [])
     {
-        return $this->parts->getMailText();
+        $this->headers = $header;
+        $this->body = $body;
+        $this->attachments = $attachments;
     }
-
-
 }
