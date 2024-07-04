@@ -19,14 +19,14 @@
     "files": []
   },
   "minimum-stability": "dev",
-  "require-dev": {
-    "phore/tester": "*"
-  },
   "config": {
     "preferred-install": "source"
   },
   "scripts": {
     "clean-samples": "php ./scripts/clean-samples.php",
-    "test": "php ./vendor/bin/ptest"
+    "test": "php ./vendor/bin/phpunit --colors --testdox test"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^11"
   }
 }
