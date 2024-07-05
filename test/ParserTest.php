@@ -36,7 +36,19 @@ class ParserTest extends TestCase
 
         $email = $parser->parse($mail);
 
-        $this->assertStringContainsString("hi", $email->body->plainText);
+        $expected = <<<EOT
+        hi
+        
+        > Am 27.06.2024 um 13:37 schrieb Joe Doe <joe@example.com>:
+        > 
+        > Viele Grüße,
+        > 
+        >   Joan
+        > 
+        
+        EOT;
+
+        $this->assertEquals($expected, $email->body->plainText);
     }
 
     public function testParseEmailBodyHtml()
