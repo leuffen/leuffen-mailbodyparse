@@ -55,12 +55,12 @@ class EmailBody
      */
     public function getMessage($as = 'text'): string
     {
-        // always use html part of the email, only fallback to text part if html is empty
-        if (!empty($this->htmlText)) {
-            $message = $this->htmlText;
-        } else {
-            $message = $this->plainText;
+        // dont' process if there is no html text
+        if (empty($this->htmlText)) {
+            return $this->plainText;
         }
+
+        $message = $this->htmlText;
 
         // convert the message to plain text
         // preserve line breaks, paragraphs, and lists 
@@ -74,6 +74,8 @@ class EmailBody
         if ($as === 'markdown') {
             $message = $this->htmlToMarkdownConverter->convert($message);
         }
+
+        // TODO: add reply parser
 
         return $message;
     }
