@@ -28,7 +28,7 @@ class EmailBody
      * The options to use when converting HTML to Markdown.
      * @var array
      */
-    private array $toMarkdownOptions = [
+    private array $htmlToMarkdownOptions = [
         'strip_tags' => true, // strip tags but keep content
         'strip_placeholder_links' => true,
         'remove_nodes' => '', // comma separated list of tags to remove (including their content)
@@ -44,7 +44,7 @@ class EmailBody
     {
         $this->plainText = $plainText;
         $this->htmlText = $htmlText;
-        $this->htmlToMarkdownConverter = new HtmlConverter($this->toMarkdownOptions);
+        $this->htmlToMarkdownConverter = new HtmlConverter($this->htmlToMarkdownOptions);
     }
 
     /**
