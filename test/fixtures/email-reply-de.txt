@@ -1,5 +1,7 @@
 From: Joan Doe <joan@example.com>
 Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.8\))
 Subject: Re: Auftrag Projekt
 Date: Tue, 2 Jul 2024 12:06:54 +0200
@@ -10,4 +12,6 @@ hi
 > Am 27.06.2024 um 13:37 schrieb Joe Doe <joe@example.com>:
 >=20
 > Viele Gr=C3=BC=C3=9Fe,
+>=20
+>   Joan
 >=20

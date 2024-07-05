@@ -13,46 +13,45 @@
 $inputDir = __DIR__ . '/../samples';
 $outputDir = __DIR__ . '/../test/fixtures';
 $allowedExtensions = ['eml', 'txt'];
-$headersToKeep = ['From', 'To', 'MIME-Version', 'Content-Type', 'Date', 'Subject'];
+$headersToKeep = ['From', 'To', 'MIME-Version', 'Content-Type', 'Date', 'Subject', 'Content-Transfer-Encoding'];
 
 $files = scandir($inputDir);
 
 foreach ($files as $file) {
-  $inputFile = $inputDir . '/' . $file;
-  $outputFile = $outputDir . '/' . $file;
-  $fileExtension = pathinfo($file, PATHINFO_EXTENSION);
+    $inputFile = $inputDir . '/' . $file;
+    $outputFile = $outputDir . '/' . $file;
+    $fileExtension = pathinfo($file, PATHINFO_EXTENSION);
 
-  if (!is_file($inputFile) || !in_array($fileExtension, $allowedExtensions) || is_file($outputFile)) {
-    continue;
-  }
-
-  $content = file_get_contents($inputFile);
-
-  $header = explode("\n", $content);
-  $header = array_filter($header, function ($line) use ($headersToKeep) {
-    // matches lines that start with one of the allowed headers
-    return preg_match('/^(' . implode('|', $headersToKeep) . '):/i', $line);
-  });
-
-  $header = array_values($header);
-
-  // replace email addresses
-  foreach ($header as &$line) {
-    if (str_starts_with($line, 'From:')) {
-      $line = 'From: Joan Doe <joan@example.com>';
+    if (!is_file($inputFile) || !in_array($fileExtension, $allowedExtensions) || is_file($outputFile)) {
+        continue;
     }
 
-    if (str_starts_with($line, 'To:')) {
-      $line = 'To: Joe Doe <joe@example.com>';
+    $content = file_get_contents($inputFile);
+
+    $header = preg_split('/\n(?![\t])/', $content);
+    $header = array_filter($header, function ($line) use ($headersToKeep) {
+        // matches lines that start with one of the allowed headers
+        return preg_match('/^(' . implode('|', $headersToKeep) . '):/i', $line);
+    });
+
+    $header = array_values($header);
+
+    // replace email addresses
+    foreach ($header as &$line) {
+        if (str_starts_with($line, 'From:')) {
+            $line = 'From: Joan Doe <joan@example.com>';
+        }
+
+        if (str_starts_with($line, 'To:')) {
+            $line = 'To: Joe Doe <joe@example.com>';
+        }
     }
-  }
-  unset($line);
+    unset($line);
 
-  // get body by finding first empty line after headers
-  $body = explode("\n", $content);
-  $body = array_slice($body, array_search('', $body) + 1);
-  $body = implode("\n", $body);
+    // get body by finding first empty line after headers
+    $matches = preg_split('/\n\n/', $content, 2);
+    $body = $matches[1] ?? '';
 
-  $cleanedContent = implode("\n", $header) . "\n\n" . $body;
-  file_put_contents($outputFile, $cleanedContent);
+    $cleanedContent = implode("\n", $header) . "\n\n" . $body;
+    file_put_contents($outputFile, $cleanedContent);
 }
