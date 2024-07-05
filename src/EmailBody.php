@@ -2,6 +2,8 @@
 
 namespace Leuffen\MailBodyParse;
 
+use League\HTMLToMarkdown\HtmlConverter;
+
 class EmailBody
 {
     /**
@@ -17,6 +19,23 @@ class EmailBody
     public readonly string $htmlText;
 
     /**
+     * The HTML to Markdown converter.
+     * @var HtmlConverter
+     */
+    private HtmlConverter $htmlToMarkdownConverter;
+
+    /**
+     * The options to use when converting HTML to Markdown.
+     * @var array
+     */
+    private array $toMarkdownOptions = [
+        'strip_tags' => true, // strip tags but keep content
+        'strip_placeholder_links' => true,
+        'remove_nodes' => '', // comma separated list of tags to remove (including their content)
+        'hard_break' => true,
+    ];
+
+    /**
      * @param string $plainText
      * @param string $htmlText
      * @return void
@@ -25,5 +44,37 @@ class EmailBody
     {
         $this->plainText = $plainText;
         $this->htmlText = $htmlText;
+        $this->htmlToMarkdownConverter = new HtmlConverter($this->toMarkdownOptions);
+    }
+
+    /**
+     * Get the email body message in the specified format.
+     * 
+     * @param string{"text", "markdown"} $as The format of the message to return. Default is "text".
+     * @return string
+     */
+    public function getMessage($as = 'text'): string
+    {
+        // always use html part of the email, only fallback to text part if html is empty
+        if (!empty($this->htmlText)) {
+            $message = $this->htmlText;
+        } else {
+            $message = $this->plainText;
+        }
+
+        // convert the message to plain text
+        // preserve line breaks, paragraphs, and lists 
+        if ($as === 'text') {
+            //strip all tag except line breaks and use markdown converter to do the rest
+            $message = strip_tags($message, ['p', 'br', 'ul', 'ol', 'li']);
+            $message = $this->htmlToMarkdownConverter->convert($message);
+        }
+
+        // convert the message to markdown
+        if ($as === 'markdown') {
+            $message = $this->htmlToMarkdownConverter->convert($message);
+        }
+
+        return $message;
     }
 }

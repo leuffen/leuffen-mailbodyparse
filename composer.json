@@ -10,7 +10,8 @@
   ],
   "require": {
     "php": ">=8.3",
-    "php-mime-mail-parser/php-mime-mail-parser": "^8"
+    "php-mime-mail-parser/php-mime-mail-parser": "^8",
+    "league/html-to-markdown": "^5.2@dev"
   },
   "suggest": {},
   "autoload": {
