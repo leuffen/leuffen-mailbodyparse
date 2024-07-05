@@ -16,25 +16,35 @@ pecl install mailparse
 
 ```php
 
-$parser = new \Leuffen\MailBodyParse\Parser();
+use Leuffen\MailBodyParse\Parser;
 
-$mailBody = <<<EOT
+$file = file_get_contents('test.eml');
 
-Text 1
+$parser = new Parser();
+$email = $parser->parse($file);
 
-On xx.xx.xxxx Somebody wrote:
+// email header
+$from = $email->header->from[0];
+echo $from['display'] . ' ' . $from['address'];
 
-> Quoted Text
->
+// $email->header->to
+// $email->header->cc
+// $email->header->bcc
 
-EOT;
+echo $email->header->subject;
+echo $email->header->date->format('D, d M Y H:i:s');
 
+// get message
+echo $email->body->getMessage();
 
-$parts = $parser->parse($mailBody);
+// or as markdown
+echo $email->body->getMessage('markdown');
 
-foreach ($parts as $part) {
-    echo $part->getType() . "\n";
-    echo $part->getContent() . "\n";
-}
+// get quote part
+echo $email->body->getQuote();
+
+// get signature
+echo $email->body->getSignature();
+
 
 ```
