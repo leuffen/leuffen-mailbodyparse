@@ -48,7 +48,7 @@ class EmailBody
     }
 
     /**
-     * Get the email body message in the specified format.
+     * Get the email body message (without reply part) in the specified format.
      * 
      * @param string{"text", "markdown"} $as The format of the message to return. Default is "text".
      * @return string
@@ -57,6 +57,7 @@ class EmailBody
     {
         // dont' process if there is no html text
         if (empty($this->htmlText)) {
+            // TODO: add reply parser
             return $this->plainText;
         }
 
@@ -65,7 +66,7 @@ class EmailBody
         // convert the message to plain text
         // preserve line breaks, paragraphs, and lists 
         if ($as === 'text') {
-            //strip all tag except line breaks and use markdown converter to do the rest
+            //strip all tags except line breaks and lists
             $message = strip_tags($message, ['p', 'br', 'ul', 'ol', 'li']);
             $message = $this->htmlToMarkdownConverter->convert($message);
         }
@@ -78,5 +79,27 @@ class EmailBody
         // TODO: add reply parser
 
         return $message;
+    }
+
+    /**
+     * Get the email body signature.
+     * 
+     * @return string 
+     */
+    public function getSignature(): string
+    {
+        // TODO: use reply parser
+        return "";
+    }
+
+    /**
+     * Get the email body quote.
+     * 
+     * @return string 
+     */
+    public function getQuote(): string
+    {
+        // TODO: use reply parser
+        return "";
     }
 }
