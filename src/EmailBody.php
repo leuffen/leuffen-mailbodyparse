@@ -49,6 +49,7 @@ class EmailBody
 
     /**
      * Get the email body message (without reply part) in the specified format.
+     * TODO: make 2 seperate methods for text and markdown
      * 
      * @param string{"text", "markdown"} $as The format of the message to return. Default is "text".
      * @return string
@@ -79,6 +80,11 @@ class EmailBody
         // TODO: add reply parser
 
         return $message;
+    }
+
+    public function getMessageAsMarkdown(): string
+    {
+        // TODO: implement
     }
 
     /**
