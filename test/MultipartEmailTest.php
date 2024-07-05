@@ -16,7 +16,7 @@ class MultipartEmailTest extends TestCase
 
         $multipartEmail = new MultipartEmail($headers, $body, $attachments);
 
-        $this->assertSame($headers, $multipartEmail->headers);
+        $this->assertSame($headers, $multipartEmail->header);
         $this->assertSame($body, $multipartEmail->body);
         $this->assertSame($attachments, $multipartEmail->attachments);
     }

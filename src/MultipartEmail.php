@@ -8,7 +8,7 @@ class MultipartEmail
      * The email headers.
      * @var EmailHeader
      */
-    public readonly EmailHeader $headers;
+    public readonly EmailHeader $header;
 
     /**
      * The email body.
@@ -30,7 +30,7 @@ class MultipartEmail
      */
     public function __construct(EmailHeader $header, EmailBody $body, array $attachments = [])
     {
-        $this->headers = $header;
+        $this->header = $header;
         $this->body = $body;
         $this->attachments = $attachments;
     }

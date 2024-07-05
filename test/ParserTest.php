@@ -14,19 +14,19 @@ class ParserTest extends TestCase
 
         $this->assertInstanceOf(\Leuffen\MailBodyParse\MultipartEmail::class, $email);
 
-        $this->assertCount(1, $email->headers->from);
-        $this->assertEquals('Joan Doe', $email->headers->from[0]['display']);
-        $this->assertEquals('joan@example.com', $email->headers->from[0]['address']);
+        $this->assertCount(1, $email->header->from);
+        $this->assertEquals('Joan Doe', $email->header->from[0]['display']);
+        $this->assertEquals('joan@example.com', $email->header->from[0]['address']);
 
-        $this->assertCount(1, $email->headers->to);
-        $this->assertEquals('Joe Doe', $email->headers->to[0]['display']);
-        $this->assertEquals('joe@example.com', $email->headers->to[0]['address']);
+        $this->assertCount(1, $email->header->to);
+        $this->assertEquals('Joe Doe', $email->header->to[0]['display']);
+        $this->assertEquals('joe@example.com', $email->header->to[0]['address']);
 
-        $this->assertCount(0, $email->headers->cc);
-        $this->assertCount(0, $email->headers->bcc);
+        $this->assertCount(0, $email->header->cc);
+        $this->assertCount(0, $email->header->bcc);
 
-        $this->assertEquals('Re: Auftrag Projekt', $email->headers->subject);
-        $this->assertEquals('2024-07-02 12:06:54', $email->headers->date->format('Y-m-d H:i:s'));
+        $this->assertEquals('Re: Auftrag Projekt', $email->header->subject);
+        $this->assertEquals('2024-07-02 12:06:54', $email->header->date->format('Y-m-d H:i:s'));
     }
 
     public function testParseEmailBodyText()
