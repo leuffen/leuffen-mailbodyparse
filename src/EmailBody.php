@@ -64,9 +64,11 @@ class EmailBody
     {
         $message = $this->replyParsedEmail->getVisibleText();
 
-        // keep line breaks and lists in plaintext
-        $message = strip_tags($message, ['p', 'br', 'ul', 'ol', 'li']);
-        $message = $this->htmlToMarkdownConverter->convert($message);
+        if (!empty($this->htmlText)) {
+            // keep line breaks and lists in plaintext
+            $message = strip_tags($message, ['p', 'br', 'ul', 'ol', 'li']);
+            $message = $this->htmlToMarkdownConverter->convert($message);
+        }
 
         return $message;
     }

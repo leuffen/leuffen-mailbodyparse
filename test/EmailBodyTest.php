@@ -87,6 +87,10 @@ class EmailBodyTest extends \PHPUnit\Framework\TestCase
     {
         $plainText = <<<EOT
         hi
+        > quote
+        test
+
+        test
 
         > Am 27.06.2024 um 13:37 schrieb Joe Doe <joe@example.com>:
         >
@@ -99,6 +103,9 @@ class EmailBodyTest extends \PHPUnit\Framework\TestCase
 
         $expected = <<<EOT
         hi
+        test
+
+        test
         EOT;
 
         $this->assertEquals($expected, $emailBody->getMessage());
