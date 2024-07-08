@@ -57,3 +57,8 @@ Copy `.txt` or `.eml` file(s) to `/samples` and run `composer run clean-samples`
 Next create an expecation file in `/test/fixtures/[file].expected.txt` containing the message as plain text (no HTML) and without any quotes and signatures.
 
 The test command `composer run test` runs the mail parser over all `/test/fixtures/*.input.txt` files and verifies the expected output.
+
+## Credits
+
+-   https://github.com/willdurand/EmailReplyParser
+-   https://github.com/php-mime-mail-parser/php-mime-mail-parser
