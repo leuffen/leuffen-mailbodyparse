@@ -48,13 +48,11 @@ class EmailBody
     }
 
     /**
-     * Get the email body message (without reply part) in the specified format.
-     * TODO: make 2 seperate methods for text and markdown
+     * Get the email body message (without reply part) as text.
      * 
-     * @param string{"text", "markdown"} $as The format of the message to return. Default is "text".
      * @return string
      */
-    public function getMessage($as = 'text'): string
+    public function getMessage(): string
     {
         // dont' process if there is no html text
         if (empty($this->htmlText)) {
@@ -64,27 +62,34 @@ class EmailBody
 
         $message = $this->htmlText;
 
-        // convert the message to plain text
-        // preserve line breaks, paragraphs, and lists 
-        if ($as === 'text') {
-            //strip all tags except line breaks and lists
-            $message = strip_tags($message, ['p', 'br', 'ul', 'ol', 'li']);
-            $message = $this->htmlToMarkdownConverter->convert($message);
-        }
-
-        // convert the message to markdown
-        if ($as === 'markdown') {
-            $message = $this->htmlToMarkdownConverter->convert($message);
-        }
+        // strip all tags except line breaks and lists
+        $message = strip_tags($message, ['p', 'br', 'ul', 'ol', 'li']);
+        $message = $this->htmlToMarkdownConverter->convert($message);
 
         // TODO: add reply parser
 
         return $message;
     }
 
+    /**
+     * Get the email body message (without reply part) as markdown.
+     * 
+     * @return string
+     */
     public function getMessageAsMarkdown(): string
     {
-        // TODO: implement
+        // dont' process if there is no html text
+        if (empty($this->htmlText)) {
+            // TODO: add reply parser
+            return $this->plainText;
+        }
+
+        $message = $this->htmlText;
+        $message = $this->htmlToMarkdownConverter->convert($message);
+
+        // TODO: add reply parser
+
+        return $message;
     }
 
     /**

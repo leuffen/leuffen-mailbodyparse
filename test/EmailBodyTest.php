@@ -51,7 +51,7 @@ class EmailBodyTest extends \PHPUnit\Framework\TestCase
         - Item 2
         EOT;
 
-        $this->assertEquals($expected, $emailBody->getMessage('text'));
+        $this->assertEquals($expected, $emailBody->getMessage());
     }
 
     public function testGetMessageAsMarkdownFromHtmlEmail()
@@ -80,6 +80,6 @@ class EmailBodyTest extends \PHPUnit\Framework\TestCase
         - Item 2
         EOT;
 
-        $this->assertEquals($expected, $emailBody->getMessage('markdown'));
+        $this->assertEquals($expected, $emailBody->getMessageAsMarkdown());
     }
 }
