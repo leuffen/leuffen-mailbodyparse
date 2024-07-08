@@ -2,6 +2,7 @@
 
 namespace Leuffen\MailBodyParse;
 
+use EmailReplyParser\Email;
 use League\HTMLToMarkdown\HtmlConverter;
 
 class EmailBody
@@ -36,6 +37,12 @@ class EmailBody
     ];
 
     /**
+     * The parsed email.
+     * @var Email|null
+     */
+    private Email|null $replyParsedEmail = null;
+
+    /**
      * @param string $plainText
      * @param string $htmlText
      * @return void
@@ -44,6 +51,7 @@ class EmailBody
     {
         $this->plainText = $plainText;
         $this->htmlText = $htmlText;
+        $this->replyParsedEmail = $this->getReplyParsedEmail();
         $this->htmlToMarkdownConverter = new HtmlConverter($this->htmlToMarkdownOptions);
     }
 
@@ -54,19 +62,11 @@ class EmailBody
      */
     public function getMessage(): string
     {
-        // dont' process if there is no html text
-        if (empty($this->htmlText)) {
-            // TODO: add reply parser
-            return $this->plainText;
-        }
+        $message = $this->replyParsedEmail->getVisibleText();
 
-        $message = $this->htmlText;
-
-        // strip all tags except line breaks and lists
+        // keep line breaks and lists in plaintext
         $message = strip_tags($message, ['p', 'br', 'ul', 'ol', 'li']);
         $message = $this->htmlToMarkdownConverter->convert($message);
-
-        // TODO: add reply parser
 
         return $message;
     }
@@ -78,16 +78,8 @@ class EmailBody
      */
     public function getMessageAsMarkdown(): string
     {
-        // dont' process if there is no html text
-        if (empty($this->htmlText)) {
-            // TODO: add reply parser
-            return $this->plainText;
-        }
-
-        $message = $this->htmlText;
+        $message = $this->replyParsedEmail->getVisibleText();
         $message = $this->htmlToMarkdownConverter->convert($message);
-
-        // TODO: add reply parser
 
         return $message;
     }
@@ -99,8 +91,16 @@ class EmailBody
      */
     public function getSignature(): string
     {
-        // TODO: use reply parser
-        return "";
+        $fragments = $this->replyParsedEmail->getFragments();
+        $signature = "";
+
+        foreach ($fragments as $fragment) {
+            if ($fragment->isSignature()) {
+                $signature .= $fragment->getContent();
+            }
+        }
+
+        return $signature;
     }
 
     /**
@@ -110,7 +110,26 @@ class EmailBody
      */
     public function getQuote(): string
     {
-        // TODO: use reply parser
-        return "";
+        $fragments = $this->replyParsedEmail->getFragments();
+        $quote = "";
+
+        foreach ($fragments as $fragment) {
+            if ($fragment->isQuoted()) {
+                $quote .= $fragment->getContent();
+            }
+        }
+
+        return $quote;
+    }
+
+    private function getReplyParsedEmail(): Email
+    {
+        if (!empty($this->htmlText)) {
+            $message = $this->htmlText;
+        } else {
+            $message = $this->plainText;
+        }
+
+        return \EmailReplyParser\EmailReplyParser::read($message);
     }
 }

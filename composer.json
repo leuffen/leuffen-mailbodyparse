@@ -16,7 +16,8 @@
   "suggest": {},
   "autoload": {
     "psr-4": {
-      "Leuffen\\MailBodyParse\\": "src/"
+      "Leuffen\\MailBodyParse\\": "src/",
+      "EmailReplyParser\\": "src/EmailReplyParser/"
     },
     "files": []
   },

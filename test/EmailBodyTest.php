@@ -82,4 +82,97 @@ class EmailBodyTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($expected, $emailBody->getMessageAsMarkdown());
     }
+
+    public function testGetMessageAsTextWithoutQuoted()
+    {
+        $plainText = <<<EOT
+        hi
+
+        > Am 27.06.2024 um 13:37 schrieb Joe Doe <joe@example.com>:
+        >
+        > Viele Grüße,
+        > Joe
+        EOT;
+        $htmlText = "";
+
+        $emailBody = new EmailBody($plainText, $htmlText);
+
+        $expected = <<<EOT
+        hi
+        EOT;
+
+        $this->assertEquals($expected, $emailBody->getMessage());
+    }
+
+    public function testGetMessageAsMarkdownWithoutQuoted()
+    {
+        $htmlText = <<<EOT
+        <b>hi</b>
+
+        > Am 27.06.2024 um 13:37 schrieb Joe Doe <joe@example.com>:
+        > 
+        > Viele Grüße,
+        > Joe
+        EOT;
+
+        $plainText = "";
+
+        $emailBody = new EmailBody($plainText, $htmlText);
+
+        $expected = <<<EOT
+        **hi**
+        EOT;
+
+        $this->assertEquals($expected, $emailBody->getMessageAsMarkdown());
+    }
+
+    public function testGetQuote()
+    {
+        $html = <<<EOT
+        hi
+
+        > Am 27.06.2024 um 13:37 schrieb Joe Doe <joe@example.com>:
+        >
+        > Viele Grüße,
+        > Joe
+        EOT;
+
+        $plainText = "";
+
+        $emailBody = new EmailBody($plainText, $html);
+
+        $expected = <<<EOT
+        > Am 27.06.2024 um 13:37 schrieb Joe Doe <joe@example.com>:
+        >
+        > Viele Grüße,
+        > Joe
+        EOT;
+
+        $this->assertEquals($expected, $emailBody->getQuote());
+    }
+
+    public function testGetSignature()
+    {
+        $html = <<<EOT
+        hi
+
+        > Am 27.06.2024 um 13:37 schrieb Joe Doe <joe@example.com>:
+        >
+        > Viele Grüße,
+        > Joe
+        --
+        Joe Doe
+        EOT;
+
+        $plainText = "";
+
+        $emailBody = new EmailBody($plainText, $html);
+
+        $expected = <<<EOT
+        --
+        Joe Doe
+        EOT;
+
+        $this->assertEquals($expected, $emailBody->getSignature());
+    }
 }
