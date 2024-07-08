@@ -19,7 +19,7 @@ $files = scandir($inputDir);
 
 foreach ($files as $file) {
     $inputFile = $inputDir . '/' . $file;
-    $outputFile = $outputDir . '/' . $file;
+    $outputFile = $outputDir . '/' . pathinfo($file, PATHINFO_FILENAME) . '.input.txt';
     $fileExtension = pathinfo($file, PATHINFO_EXTENSION);
 
     if (!is_file($inputFile) || !in_array($fileExtension, $allowedExtensions) || is_file($outputFile)) {

@@ -7,7 +7,7 @@ class ParserTest extends TestCase
 {
     public function testParseEmailHeader()
     {
-        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.txt');
+        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.input.txt');
         $parser = new Parser();
 
         $email = $parser->parse($mail);
@@ -31,7 +31,7 @@ class ParserTest extends TestCase
 
     public function testParseEmailBodyText()
     {
-        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.txt');
+        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.input.txt');
         $parser = new Parser();
 
         $email = $parser->parse($mail);
@@ -53,7 +53,7 @@ class ParserTest extends TestCase
 
     public function testParseEmailBodyHtml()
     {
-        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.txt');
+        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.input.txt');
         $parser = new Parser();
 
         $email = $parser->parse($mail);

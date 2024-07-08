@@ -4,9 +4,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Leuffen\MailBodyParse\Parser;
 
 
-$mail = file_get_contents(__DIR__ . '/../test/fixtures/email-reply-de.txt');
-$parser = new Parser();
+$mail = file_get_contents(__DIR__ . '/../test/fixtures/email-reply-de.input.txt');
 
+$parser = new Parser();
 $email = $parser->parse($mail);
 
 $fromName = $email->header->from[0]['display'];
