@@ -7,7 +7,7 @@ class ParserTest extends TestCase
 {
     public function testParseEmailHeader()
     {
-        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.input.txt');
+        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.txt');
         $parser = new Parser();
 
         $email = $parser->parse($mail);
@@ -15,12 +15,12 @@ class ParserTest extends TestCase
         $this->assertInstanceOf(\Leuffen\MailBodyParse\MultipartEmail::class, $email);
 
         $this->assertCount(1, $email->header->from);
-        $this->assertEquals('Joan Doe', $email->header->from[0]['display']);
-        $this->assertEquals('joan@example.com', $email->header->from[0]['address']);
+        $this->assertEquals('Sender', $email->header->from[0]['display']);
+        $this->assertEquals('sender@example.com', $email->header->from[0]['address']);
 
         $this->assertCount(1, $email->header->to);
-        $this->assertEquals('Joe Doe', $email->header->to[0]['display']);
-        $this->assertEquals('joe@example.com', $email->header->to[0]['address']);
+        $this->assertEquals('Recipient', $email->header->to[0]['display']);
+        $this->assertEquals('recipient@example.com', $email->header->to[0]['address']);
 
         $this->assertCount(0, $email->header->cc);
         $this->assertCount(0, $email->header->bcc);
@@ -31,7 +31,7 @@ class ParserTest extends TestCase
 
     public function testParseEmailBodyText()
     {
-        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.input.txt');
+        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.txt');
         $parser = new Parser();
 
         $email = $parser->parse($mail);
@@ -53,7 +53,7 @@ class ParserTest extends TestCase
 
     public function testParseEmailBodyHtml()
     {
-        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.input.txt');
+        $mail = file_get_contents(__DIR__ . '/fixtures/email-reply-de.txt');
         $parser = new Parser();
 
         $email = $parser->parse($mail);

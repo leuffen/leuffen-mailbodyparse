@@ -1,11 +1,11 @@
-From: Joan Doe <joan@example.com>
+From: Sender <sender@example.com>
 Content-Type: text/plain;
 	charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.8\))
 Subject: Re: Auftrag Projekt
 Date: Tue, 2 Jul 2024 12:06:54 +0200
-To: Joe Doe <joe@example.com>
+To: Recipient <recipient@example.com>
 
 hi
 

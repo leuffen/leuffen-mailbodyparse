@@ -11,15 +11,17 @@
 
 
 $inputDir = __DIR__ . '/../samples';
+$excludedFiles = glob(__DIR__ . '/../samples/*spec.txt');
+$inputFiles = glob($inputDir . '/*.{txt,eml}', GLOB_BRACE);
+$files = array_diff($inputFiles, $excludedFiles);
+
 $outputDir = __DIR__ . '/../test/fixtures';
 $allowedExtensions = ['eml', 'txt'];
 $headersToKeep = ['From', 'To', 'MIME-Version', 'Content-Type', 'Date', 'Subject', 'Content-Transfer-Encoding'];
 
-$files = scandir($inputDir);
-
 foreach ($files as $file) {
-    $inputFile = $inputDir . '/' . $file;
-    $outputFile = $outputDir . '/' . pathinfo($file, PATHINFO_FILENAME) . '.input.txt';
+    $inputFile = $file;
+    $outputFile = $outputDir . '/' . pathinfo($file, PATHINFO_FILENAME) . '.txt';
     $fileExtension = pathinfo($file, PATHINFO_EXTENSION);
 
     if (!is_file($inputFile) || !in_array($fileExtension, $allowedExtensions) || is_file($outputFile)) {
@@ -39,11 +41,19 @@ foreach ($files as $file) {
     // replace email addresses
     foreach ($header as &$line) {
         if (str_starts_with($line, 'From:')) {
-            $line = 'From: Joan Doe <joan@example.com>';
+            $line = 'From: Sender <sender@example.com>';
         }
 
         if (str_starts_with($line, 'To:')) {
-            $line = 'To: Joe Doe <joe@example.com>';
+            $line = 'To: Recipient <recipient@example.com>';
+        }
+
+        if (str_starts_with($line, 'CC:')) {
+            $line = '';
+        }
+
+        if (str_starts_with($line, 'BCC:')) {
+            $line = '';
         }
     }
     unset($line);
