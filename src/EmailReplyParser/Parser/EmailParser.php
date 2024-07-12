@@ -18,7 +18,7 @@ use EmailReplyParser\Fragment;
  */
 class EmailParser
 {
-    const QUOTE_REGEX = '/^>+/s';
+    const QUOTE_REGEX = '/^(>|&gt;)+/s';
 
     /**
      * Regex to match signatures
@@ -28,6 +28,7 @@ class EmailParser
     private $signatureRegex = [
         '/(?:^\s*--|^\s*__|^-\w|^-- $)|(?:^Sent from (my|Mail) (?:\s*\w+){1,4}$)|(?:^={30,}$)$/s',
         '/(?:^\s*--|^\s*__|^-\w|^-- $)|(?:^Gesendet von meinem (?:\s*\w+){1,4}$)|(?:^={30,}$)$/s',
+        '/(?:^\s*--|^\s*__|^-\w|^-- $)|(?:^Von meinem (?:\s*\w+){1,4} gesendet$)|(?:^={30,}$)$/s',
         '/(?:^\s*--|^\s*__|^-\w|^-- $)|(?:^Verstuurd vanaf mijn (?:\s*\w+){1,4}$)|(?:^={30,}$)$/s',
     ];
 
