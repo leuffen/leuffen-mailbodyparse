@@ -51,8 +51,8 @@ class EmailBody
     {
         $this->plainText = $plainText;
         $this->htmlText = $htmlText;
-        $this->replyParsedEmail = $this->getReplyParsedEmail();
         $this->htmlToMarkdownConverter = new HtmlConverter($this->htmlToMarkdownOptions);
+        $this->replyParsedEmail = $this->getReplyParsedEmail();
     }
 
     /**
@@ -64,12 +64,6 @@ class EmailBody
     {
         $message = $this->replyParsedEmail->getVisibleText();
 
-        if (!empty($this->htmlText)) {
-            // keep line breaks and lists in plaintext
-            $message = strip_tags($message, ['p', 'br', 'ul', 'ol', 'li']);
-            $message = $this->htmlToMarkdownConverter->convert($message);
-        }
-
         return $message;
     }
 
@@ -80,7 +74,14 @@ class EmailBody
      */
     public function getMessageAsMarkdown(): string
     {
-        $message = $this->replyParsedEmail->getVisibleText();
+        if ($this->htmlText === "") {
+            return $this->plainText;
+        }
+
+        // TODO: create test cases with real world examples
+        $message = $this->replaceWeirdHtmlFromMailClients($this->htmlText);
+        $message = strip_tags($message, ['p', 'br', 'ul', 'ol', 'li', 'b', 'strong', 'i', 'em', 'u', 's', 'strike', 'a']);
+        $message = \EmailReplyParser\EmailReplyParser::parseReply($message);
         $message = $this->htmlToMarkdownConverter->convert($message);
 
         return $message;
@@ -126,12 +127,42 @@ class EmailBody
 
     private function getReplyParsedEmail(): Email
     {
+        /**
+         * EmailReplyParser only works with plain text.
+         * So we need to convert the HTML email to plain text first.
+         */
+
         if (!empty($this->htmlText)) {
-            $message = $this->htmlText;
+            $message = $this->replaceWeirdHtmlFromMailClients($this->htmlText);
+
+            // replace <mail@example.com> with html entities
+            // otherwise it would be removed by strip_tags
+            $message = preg_replace('/<(.+@.+\.\w{2,5})>/', '&lt;$1&gt;', $message);
+
+            // only keep line breaks and lists
+            $message = strip_tags($message, ['div', 'p', 'br', 'ul', 'ol', 'li']);
+
+            // use markdown converter to keep line breaks and lists
+            $message = $this->htmlToMarkdownConverter->convert($message);
+
+            // revert markdown escape lines (\-) -> breaks signature detection
+            $message = str_replace('\\-', "-", $message);
         } else {
             $message = $this->plainText;
         }
 
         return \EmailReplyParser\EmailReplyParser::read($message);
+    }
+
+
+    private function replaceWeirdHtmlFromMailClients(string $html): string
+    {
+        // replace <div><br></div>
+        $html = preg_replace('/<div><br><\/div>/', '<br>', $html);
+
+        // replace all div <br>
+        $html = preg_replace('/<div>(.*?)<\/div>/', '<br>$1', $html);
+
+        return $html;
     }
 }

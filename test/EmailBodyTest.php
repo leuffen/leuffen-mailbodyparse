@@ -29,14 +29,12 @@ class EmailBodyTest extends \PHPUnit\Framework\TestCase
     {
         $plainText = "plain text";
         $htmlText = <<<EOT
-        <div>
-            <p>This is the HTML version of the <i>email</i> body.</p>
-            <p>It contains multiple<br>paragraphs.</p>
-            <ul>
-                <li>Item 1</li>
-                <li>Item 2</li>
-            </ul>
-        </div>
+        <p>This is the HTML version of the <i>email</i> body.</p>
+        <p>It contains multiple<br>paragraphs.</p>
+        <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+        </ul>
         EOT;
 
         $emailBody = new EmailBody($plainText, $htmlText);
@@ -135,16 +133,16 @@ class EmailBodyTest extends \PHPUnit\Framework\TestCase
 
     public function testGetQuote()
     {
-        $html = <<<EOT
+        $plainText = <<<EOT
         hi
 
         > Am 27.06.2024 um 13:37 schrieb Joe Doe <joe@example.com>:
-        >
+        > 
         > Viele Grüße,
         > Joe
         EOT;
 
-        $plainText = "";
+        $html = "";
 
         $emailBody = new EmailBody($plainText, $html);
 
@@ -160,7 +158,7 @@ class EmailBodyTest extends \PHPUnit\Framework\TestCase
 
     public function testGetSignature()
     {
-        $html = <<<EOT
+        $plainText = <<<EOT
         hi
 
         > Am 27.06.2024 um 13:37 schrieb Joe Doe <joe@example.com>:
@@ -171,7 +169,7 @@ class EmailBodyTest extends \PHPUnit\Framework\TestCase
         Joe Doe
         EOT;
 
-        $plainText = "";
+        $html = "";
 
         $emailBody = new EmailBody($plainText, $html);
 
