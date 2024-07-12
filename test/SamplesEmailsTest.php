@@ -4,9 +4,9 @@ use Leuffen\MailBodyParse\Parser;
 
 class SamplesEmailsTest extends \PHPUnit\Framework\TestCase
 {
-    private function getSpecFilename(string $filename): string
+    private function getSpecForFile(string $path, string $filename): string
     {
-        $specFile = __DIR__ . '/fixtures/' . pathinfo($filename, PATHINFO_FILENAME) . '.spec.txt';
+        $specFile = $path . pathinfo($filename, PATHINFO_FILENAME) . '.spec.txt';
 
         if (!file_exists($specFile)) {
             $this->fail('Spec file not found: ' . $specFile);
@@ -25,7 +25,7 @@ class SamplesEmailsTest extends \PHPUnit\Framework\TestCase
 
         foreach ($inputs as $index => $input) {
             $rawEmail = file_get_contents($input);
-            $expectedText = $this->getSpecFilename($input);
+            $expectedText = $this->getSpecForFile(__DIR__ . '/fixtures/', $input);
 
             $email = $parser->parse($rawEmail);
             $bodyText =  $email->body->getMessage();
@@ -44,7 +44,7 @@ class SamplesEmailsTest extends \PHPUnit\Framework\TestCase
 
         foreach ($inputs as $index => $input) {
             $rawEmail = file_get_contents($input);
-            $expectedText = $this->getSpecFilename($input);
+            $expectedText = $this->getSpecForFile(__DIR__ . '/../samples/', $input);
 
             $email = $parser->parse($rawEmail);
             $bodyText =  $email->body->getMessage();
