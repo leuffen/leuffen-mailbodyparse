@@ -48,15 +48,25 @@ echo $email->body->getSignature();
 
 ```
 
-## Add Sample Emails
+## Sample Emails
+
+You can test the body parser with your own sample emails.
+
+Copy `.txt` or `.eml` file(s) to `/samples`. Create an `/samples/[filename].spec.txt` file that contains the expected output of the body parser. Run `composer run test-samples`.
+
+Files in the `/samples` directory are not part of the repository. This way you can test sample emails without having to wory about data privacy.
+
+## Clean Samples Script
+
+The script copies sample emails from `/samples` to `/test/fixtures` and removes irrelevant headers.
 
 > **!!!Make sure to manually remove all personal data before adding samples files to the repository!!!**
 
-Copy `.txt` or `.eml` file(s) to `/samples` and run `composer run clean-samples`. This removes irrelevant header and copies the files to `/test/fixtures/[filename].input.txt`.
+Copy `.txt` or `.eml` file(s) to `/samples` and run `composer run clean-samples`.
 
-Next create an expecation file in `/test/fixtures/[file].expected.txt` containing the message as plain text (no HTML) and without any quotes and signatures.
+Create an expecation file in `/test/fixtures/[file].spec.txt` containing the message as plain text (no HTML) and without any quotes and signatures.
 
-The test command `composer run test` runs the mail parser over all `/test/fixtures/*.input.txt` files and verifies the expected output.
+The test command `composer run test-samples` runs the mail parser over all `/test/fixtures/*.txt` files and verifies that the parser output equals the content of the corresponding `/test/fixtures/*.spec.txt`.
 
 ## Credits
 
