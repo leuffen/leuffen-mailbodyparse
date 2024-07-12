@@ -27,7 +27,8 @@
   },
   "scripts": {
     "clean-samples": "php ./scripts/clean-samples.php",
-    "test": "php ./vendor/bin/phpunit --colors --testdox test"
+    "test": "php ./vendor/bin/phpunit --colors --testdox test",
+    "test-samples": "php ./vendor/bin/phpunit --colors --testdox test/SamplesEmailsTest.php"
   },
   "require-dev": {
     "phpunit/phpunit": "^11"

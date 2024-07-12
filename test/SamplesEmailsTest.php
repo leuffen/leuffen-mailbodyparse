@@ -33,4 +33,23 @@ class SamplesEmailsTest extends \PHPUnit\Framework\TestCase
             $this->assertEquals($expectedText, $bodyText);
         }
     }
+
+    public function testPrivateSampleEmails()
+    {
+        $inputFiles = glob(__DIR__ . '/../samples/*.txt');
+        $specFiles = glob(__DIR__ . '/../samples/*.spec.txt');
+        $inputs = array_diff($inputFiles, $specFiles);
+
+        $parser = new Parser();
+
+        foreach ($inputs as $index => $input) {
+            $rawEmail = file_get_contents($input);
+            $expectedText = $this->getSpecFilename($input);
+
+            $email = $parser->parse($rawEmail);
+            $bodyText =  $email->body->getMessage();
+
+            $this->assertEquals($expectedText, $bodyText);
+        }
+    }
 }
