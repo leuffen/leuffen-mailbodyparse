@@ -135,10 +135,6 @@ class EmailBody
         if (!empty($this->htmlText)) {
             $message = $this->replaceWeirdHtmlFromMailClients($this->htmlText);
 
-            // replace <mail@example.com> with html entities
-            // otherwise it would be removed by strip_tags
-            $message = preg_replace('/<(.+@.+\.\w{2,5})>/', '&lt;$1&gt;', $message);
-
             // only keep line breaks and lists
             $message = strip_tags($message, ['div', 'p', 'br', 'ul', 'ol', 'li']);
 
